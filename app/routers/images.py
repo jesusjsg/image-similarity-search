@@ -16,7 +16,7 @@ async def upload_image(
     request: Request,
     service: Annotated[ImageSearchService, Depends(get_search_service)],
     file: UploadFile = File(..., description="Image file to upload"),
-    top_k: Annotated[int, Query(gt=0, le=10, description="Number of top results to return")] = 8,
+    top_k: Annotated[int, Query(gt=0, le=10, description="Number of top results to return")] = 10,
 ) -> Dict[str, Any]:
     try:
         contents = await file.read()
