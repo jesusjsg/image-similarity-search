@@ -38,7 +38,7 @@ class GenerateEmbedding:
         except Exception as e:
             print(f"Error loading model: {e}")
             raise
-        
+
     def _get_image_files(self) -> list[Path]:
         image_extensions = {'.jpg', '.jpeg', '.png', '.webp'}
         image_files = [
