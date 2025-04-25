@@ -7,10 +7,10 @@ import os
 from io import BytesIO
 from PIL import Image
 from pathlib import Path
-from core.config import settings
+from app.core.config import settings
 
 
-class SearchService:
+class ImageSearchService:
     def __init__(self,
                 index_path: Path,
                 mapping_path: Path,
