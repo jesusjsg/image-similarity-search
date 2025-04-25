@@ -20,7 +20,7 @@ class GenerateEmbedding:
                 index_file_dir: Path,
                 mapping_file_dir: Path,
                 model_name: str,
-                device: str = None):
+                device: str | None):
         self.image_dir = image_dir
         self.index_output_dir = index_output_dir
         self.index_file_dir = index_file_dir
