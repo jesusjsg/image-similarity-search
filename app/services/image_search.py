@@ -37,7 +37,7 @@ class ImageSearchService:
             print(f"Error loading model or index: {e}")
             raise
     
-    def search(self, query: str, top_k: int = 5) -> tuple[list[str], list[float]]:
+    def search(self, query: str, top_k: int = 20) -> tuple[list[str], list[float]]:
         try:
             image_input = self.preprocess(query).unsqueeze(0).to(self.device)
             with torch.no_grad():
