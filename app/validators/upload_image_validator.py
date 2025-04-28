@@ -4,6 +4,7 @@ from app.core.config import settings
 
 ALLOWED_IMAGE_MIME_TYPES: Set[str] = {
     "image/jpeg",
+    "image/jpg",
     "image/png",
     "image/webp",
     "image/gif"
@@ -26,18 +27,10 @@ async def validate_uploaded_image(file: UploadFile) -> bytes:
         )
 
     contents: Optional[bytes] = None
-    try:
-        contents = await file.read()
-        if len(contents) > MAX_BYTES:
-            raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                detail=f"El tamaño del archivo es demasiado grande."
-            )
-        return contents
-    except Exception as e:
+    contents = await file.read()
+    if len(contents) > MAX_BYTES:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Error al leer el archivo."
+            detail=f"El tamaño del archivo es demasiado grande."
         )
-    finally:
-        await file.close()
+    return contents

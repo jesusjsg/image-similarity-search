@@ -62,7 +62,7 @@ async def upload_image(
 
         response_items_list.append({
             "name": filename_stem,
-            "score": float(score),
+            "score": round(float(score), 2),
             "image_url": url
         })
 
