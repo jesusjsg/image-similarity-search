@@ -8,7 +8,7 @@ from app.services.image_search import ImageSearchService
 from app.core.config import settings
 from app.core.dependencies import get_search_service
 from app.schemas.image import SearchResponse
-from app.validators.upload_image_validator import validate_file_content_type
+from app.validators.upload_image_validator import validate_uploaded_image
 
 
 router = APIRouter(prefix="/image", tags=["Image"])
@@ -27,12 +27,9 @@ async def upload_image(
     top_k: Annotated[int, Query(
         gt=0, le=20, description="Number of top results to return")] = 20,
 ) -> SearchResponse:
-    validate_file_content_type(file)
-    contents = None
-    query_image = None
+    validate_contents = await validate_uploaded_image(file)
     try:
-        contents = await file.read()
-        query_image = Image.open(io.BytesIO(contents))
+        query_image = Image.open(io.BytesIO(validate_contents))
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

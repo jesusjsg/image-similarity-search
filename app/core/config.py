@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     DEVICE: str
     STATIC_IMAGE_PATH: Path
     IMAGE_BASE_URL: str
+    MAX_UPLOAD_SIZE: int = 10 * 1024 * 1024  # 10 MB
 
     class Config:
         env_file = ".env"
