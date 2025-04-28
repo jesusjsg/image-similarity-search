@@ -8,9 +8,13 @@ from app.services.image_search import ImageSearchService
 from app.core.config import settings
 from app.core.dependencies import get_search_service
 from app.schemas.image import SearchResponse
+from app.validators.upload_image_validator import validate_file_content_type
 
 
 router = APIRouter(prefix="/image", tags=["Image"])
+
+ALLOWED_IMAGE_EXTENSIONS = {"image/jpeg",
+                            "image/jpg", "image/png", "image/webp", "image/gif"}
 
 
 @router.post("/upload",
@@ -23,6 +27,9 @@ async def upload_image(
     top_k: Annotated[int, Query(
         gt=0, le=20, description="Number of top results to return")] = 20,
 ) -> SearchResponse:
+    validate_file_content_type(file)
+    contents = None
+    query_image = None
     try:
         contents = await file.read()
         query_image = Image.open(io.BytesIO(contents))
@@ -44,7 +51,7 @@ async def upload_image(
             detail=f"Error searching for similar images: {str(e)}"
         )
 
-    response_items_list = List[Dict[str, Any]] = []
+    response_items_list: List[Dict[str, Any]] = []
     base_url = str(settings.IMAGE_BASE_URL).strip("/")
     static_root = str(settings.STATIC_IMAGE_PATH.resolve())
 
@@ -65,6 +72,4 @@ async def upload_image(
             "image_url": url
         })
 
-    return {
-        "results": response_items_list,
-    }
+    return SearchResponse(results=response_items_list)
