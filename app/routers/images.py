@@ -13,9 +13,6 @@ from app.validators.upload_image_validator import validate_uploaded_image
 
 router = APIRouter(prefix="/image", tags=["Image"])
 
-ALLOWED_IMAGE_EXTENSIONS = {"image/jpeg",
-                            "image/jpg", "image/png", "image/webp", "image/gif"}
-
 
 @router.post("/upload",
              summary="Upload an image",
@@ -33,7 +30,7 @@ async def upload_image(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error processing image: {str(e)}"
+            detail=f"Error al procesar la imagen."
         )
     finally:
         await file.close()
@@ -45,7 +42,7 @@ async def upload_image(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error searching for similar images: {str(e)}"
+            detail=f"Error al realizar la búsqueda."
         )
 
     response_items_list: List[Dict[str, Any]] = []
@@ -61,7 +58,7 @@ async def upload_image(
             url_path = "/".join(relative_path.parts)
             url = f"{base_url}/{url_path}"
         except Exception as e:
-            print(f"Error processing path {path}: {e}")
+            print(f"Error al construir la URL.")
 
         response_items_list.append({
             "name": filename_stem,
