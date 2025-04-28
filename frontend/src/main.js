@@ -2,7 +2,7 @@ const form = document.getElementById('search-form')
 const resultDiv = document.getElementById('result')
 const fileInput = document.getElementById('image-input')
 
-const API_BASE_URL = 'http://127.0.0.1:8000'
+const API_BASE_URL = 'http://192.168.0.102:8000'
 const API_ENDPOINT = `${API_BASE_URL}/image/upload`
 console.log('API Endpoint:', API_ENDPOINT)
 form.addEventListener('submit', async (e) => {
@@ -44,7 +44,7 @@ form.addEventListener('submit', async (e) => {
         console.log('Respuesta del servidor:', data)
 
         if (data.results && data.results.length > 0) {
-            const resultsToShow = data.results.slice(0, 30)
+            const resultsToShow = data.results.slice(0, 20)
             let resultsHtml = '<div style="display: flex flex-wrap: wrap gap: 15px justify-content: center">'
 
             resultsToShow.forEach(individualResult => {
