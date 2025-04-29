@@ -64,7 +64,6 @@ Esta es una API REST construida con **FastAPI** que permite a los usuarios subir
 
 5.  **Variables de Entorno (`.env`):**
     * Crea un archivo llamado `.env` en la raíz del proyecto.
-    * Copia y adapta la siguiente estructura (ajusta las rutas y valores según tu sistema):
 
         ```dotenv
         # .env.example - Copia a .env y edita
