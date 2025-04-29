@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     DEVICE: str
     STATIC_IMAGE_PATH: Path
     IMAGE_BASE_URL: str
-    MAX_UPLOAD_SIZE: int = 10 * 1024 * 1024
+    MAX_UPLOAD_SIZE: int
     ALLOWED_ORIGINS: list[str] = ["*"]
     ALLOWED_METHODS: list[str] = ["GET", "POST", "PUT", "DELETE"]
     ALLOWED_HEADERS: list[str] = ["*"]
