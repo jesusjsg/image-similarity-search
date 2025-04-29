@@ -2,7 +2,7 @@ import io
 from typing import Annotated, List, Dict, Any
 from fastapi import APIRouter, UploadFile, File, HTTPException, Depends, status, Request, Query
 from fastapi.concurrency import run_in_threadpool
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from pathlib import Path
 from app.services.image_search import ImageSearchService
 from app.core.config import settings
@@ -27,23 +27,19 @@ async def upload_image(
     validate_contents = await validate_uploaded_image(file)
     try:
         query_image = Image.open(io.BytesIO(validate_contents))
-    except Exception as e:
+    except UnidentifiedImageError:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error al procesar la imagen."
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="El archivo no es una imagen válida."
         )
     finally:
         await file.close()
 
-    try:
-        results_paths, results_scores = await run_in_threadpool(
-            service.search, query_image, top_k
-        )
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error al realizar la búsqueda."
-        )
+    results_paths, results_scores = await run_in_threadpool(
+        service.search,
+        query_image,
+        top_k=top_k
+    )
 
     response_items_list: List[Dict[str, Any]] = []
     base_url = str(settings.IMAGE_BASE_URL).strip("/")

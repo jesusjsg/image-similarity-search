@@ -2,10 +2,11 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from contextlib import asynccontextmanager
 from app.routers import images as images_router
 from app.core.config import settings
-from contextlib import asynccontextmanager
 from app.services.image_search import ImageSearchService
+from app.middleware.errors_handling_middleware import ErrorsHandlingMiddleware
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
@@ -37,6 +38,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+app.add_middleware(ErrorsHandlingMiddleware)
 
 app.include_router(images_router.router, tags=["Images-search"])
 
