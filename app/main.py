@@ -1,12 +1,10 @@
 import os
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
+from fastapi import FastAPI
 from app.routers import images as images_router
-from app.core.config import settings
 from app.services.image_search import ImageSearchService
-from app.middleware.errors_handling_middleware import ErrorsHandlingMiddleware
+from app.core.config import settings
+from app.core.app_setup import setup_app
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
@@ -22,31 +20,17 @@ async def lifespan(app: FastAPI):
             device=settings.DEVICE
         )
         print("ImageSearchService initialized successfully.")
-    except Exception as e:
+        app.state.search_service = service_instance
+    except FileNotFoundError as e:
         print(f"Error initializing ImageSearchService: {e}")
-    app.state.search_service = service_instance
-    yield
-    app.state.search_service = None
+        app.state.search_service = service_instance
+    except Exception as e:
+        print(f"Unexpected error initializing ImageSearchService: {e}")
+        app.state.search_service = service_instance
+    yield  # Inicio de la aplicación
 
-app = FastAPI(title="Image Search API", lifespan=lifespan)
+app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
 
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-
-app.add_middleware(ErrorsHandlingMiddleware)
+setup_app(app)
 
 app.include_router(images_router.router, tags=["Images-search"])
-
-if settings.STATIC_IMAGE_PATH.exists() and settings.STATIC_IMAGE_PATH.is_dir():
-    app.mount(
-        "/static",
-        StaticFiles(directory=settings.STATIC_IMAGE_PATH),
-        name="static"
-    )
-    print(f"Mounted static files from {settings.STATIC_IMAGE_PATH}")

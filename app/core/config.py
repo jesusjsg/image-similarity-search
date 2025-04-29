@@ -3,6 +3,7 @@ from pathlib import Path
 
 
 class Settings(BaseSettings):
+    PROJECT_NAME: str
     INDEX_FAISS_PATH: Path
     MAPPING_ROUTES_PATH: Path
     CLIP_MODEL_NAME: str
@@ -10,6 +11,10 @@ class Settings(BaseSettings):
     STATIC_IMAGE_PATH: Path
     IMAGE_BASE_URL: str
     MAX_UPLOAD_SIZE: int = 10 * 1024 * 1024
+    ALLOWED_ORIGINS: list[str] = ["*"]
+    ALLOWED_METHODS: list[str] = ["GET", "POST", "PUT", "DELETE"]
+    ALLOWED_HEADERS: list[str] = ["*"]
+    ALLOW_CREDENTIALS: bool
 
     class Config:
         env_file = ".env"
