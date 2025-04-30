@@ -13,7 +13,6 @@ Esta es una API REST construida con **FastAPI** que permite a los usuarios subir
 * **CORS Habilitado:** Configurable para permitir solicitudes desde frontends en diferentes orígenes.
 * **Manejo Centralizado de Errores:** Middleware personalizado para devolver respuestas JSON consistentes en caso de error.
 * **Servicio de Imágenes Estáticas:** Sirve los archivos de imagen del dataset para mostrarlos en los resultados.
-* **Documentación Automática:** Incluye documentación interactiva de la API vía Swagger UI (`/api/v1/docs`) y ReDoc (`/api/v1/redoc`).
 
 ## Tecnología Utilizada
 
