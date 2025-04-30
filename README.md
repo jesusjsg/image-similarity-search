@@ -72,7 +72,7 @@ Esta es una API REST construida con **FastAPI** que permite a los usuarios subir
         APP_PROJECT_NAME="Image Similarity Search API"
         APP_PROJECT_VERSION="1.0.0"
 
-        # --- Rutas (¡MUY IMPORTANTE! Usa rutas absolutas o relativas correctas) ---
+        # --- Rutas ---
         APP_INDEX_FAISS_PATH=/ruta/completa/a/data/index/index.faiss
         APP_MAPPING_ROUTES_PATH=/ruta/completa/a/data/index/mapping.json
         APP_STATIC_IMAGE_PATH=/ruta/completa/a/static/images # Directorio que contiene tus imágenes
