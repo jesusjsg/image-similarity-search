@@ -17,7 +17,7 @@ router = APIRouter(prefix="/image", tags=["Image"])
 @router.post("/upload",
              summary="Upload an image",
              response_model=SearchResponse)
-async def upload_image(
+async def search_by_image(
     request: Request,
     service: Annotated[ImageSearchService, Depends(get_search_service)],
     file: UploadFile = File(..., description="Image file to upload"),
