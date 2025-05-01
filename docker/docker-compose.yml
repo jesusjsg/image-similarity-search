@@ -1,0 +1,16 @@
+services:
+  image-search-api:
+    build: .
+    container_name: image-search-api-container_name
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      APP_INDEX_FAISS_PATH: /data/index/embeddings.faiss
+      APP_MAPPING_ROUTES_PATH: /data/index/mapping.json
+      APP_STATIC_IMAGE_DIR: /data/images
+      APP_IMAGE_BASE_URL: /static
+      APP_CLIP_MODEL_NAME: ViT-B/32
+      APP_DEVICE: cpu
+    volumes:
+      - /home/tests/image-search-api/data/index:/data/index:ro

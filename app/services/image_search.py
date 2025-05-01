@@ -5,7 +5,6 @@ import torch
 import clip
 from PIL import Image
 from pathlib import Path
-from app.core.config import settings
 
 
 class ImageSearchService:
