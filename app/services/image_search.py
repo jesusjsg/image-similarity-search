@@ -35,7 +35,7 @@ class ImageSearchService:
                 self.image_paths = json.load(f)
 
         except Exception as e:
-            log.error(f"Error loading model or index: {e}")
+            print(f"Error loading model or index: {e}")
             raise
 
     def search(self, query: Image.Image, top_k: int) -> tuple[list[str], list[float]]:
@@ -60,5 +60,5 @@ class ImageSearchService:
                         valid_distances.append(distances[0][i])
             return results, valid_distances
         except Exception as e:
-            log.error(f"Error during search: {e}")
+            print(f"Error during search: {e}")
             return [], []

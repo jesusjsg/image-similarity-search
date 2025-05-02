@@ -60,7 +60,7 @@ async def search_by_image(
             url_path = "/".join(relative_path.parts)
             url = f"{base_url}/{url_path}"
         except Exception as e:
-            log.error(f"Error creating URL for image: {e}")
+            print(f"Error creating URL for image: {e}")
 
         response_items_list.append({
             "name": filename_stem,
