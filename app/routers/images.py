@@ -1,5 +1,4 @@
 import io
-import logging
 from pathlib import Path
 from typing import Annotated, Any, Dict, List
 
@@ -13,9 +12,6 @@ from app.core.dependencies import get_search_service
 from app.schemas.image import SearchResponse
 from app.services.image_search import ImageSearchService
 from app.validators.upload_image_validator import validate_uploaded_image
-
-log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
 
 #  Cambio del prefijo de la ruta a /search
 router = APIRouter(prefix="/image", tags=["Image"])

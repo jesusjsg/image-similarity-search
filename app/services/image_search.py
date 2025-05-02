@@ -1,5 +1,4 @@
 import json
-import logging
 from collections.abc import Callable
 from pathlib import Path
 
@@ -9,9 +8,6 @@ import numpy as np
 import torch
 from PIL import Image
 from torch import Tensor
-
-log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
 
 
 class ImageSearchService:
