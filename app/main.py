@@ -1,10 +1,12 @@
 import os
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
+
+from app.core.app_setup import setup_app
+from app.core.config import settings
 from app.routers import images as images_router
 from app.services.image_search import ImageSearchService
-from app.core.config import settings
-from app.core.app_setup import setup_app
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 

@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE: int
     ALLOWED_ORIGINS: list[str] = ["*"]
     ALLOWED_METHODS: list[str] = ["GET", "POST", "PUT", "DELETE"]
-    ALLOWED_HEADERS: list[str] = ["*"]
+    ALLOWED_HEADERS: list[str] = ["Content-Type", "Authorization"]
     ALLOW_CREDENTIALS: bool
 
     class Config:
