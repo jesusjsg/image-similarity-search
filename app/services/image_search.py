@@ -1,10 +1,11 @@
-import numpy as np
-import faiss
 import json
-import torch
-import clip
-from PIL import Image
 from pathlib import Path
+
+import clip
+import faiss
+import numpy as np
+import torch
+from PIL import Image
 
 
 class ImageSearchService:
@@ -35,14 +36,16 @@ class ImageSearchService:
             print(f"Error loading model or index: {e}")
             raise
 
-    def search(self, query: Image.Image, top_k: int = 20) -> tuple[list[str], list[float]]:
+    def search(self, query: Image.Image, top_k: int) -> tuple[list[str], list[float]]:
         try:
-            image_input = self.preprocess(query).unsqueeze(0).to(self.device)
+            query_rgb = query.convert("RGB")
+            image_input = self.preprocess(
+                query_rgb).unsqueeze(0).to(self.device)
             with torch.no_grad():
-                query_embedding = self.model.encode_image(
-                    image_input).cpu().numpy().astype(np.float32)
-            faiss.normalize_L2(query_embedding)
-            distances, indices = self.index.search(query_embedding, top_k)
+                query_embedding = self.model.encode_image(image_input)
+            query_embedding_np = query_embedding.cpu().numpy().astype(np.float32)
+            faiss.normalize_L2(query_embedding_np)
+            distances, indices = self.index.search(query_embedding_np, top_k)
 
             results = []
             valid_distances = []

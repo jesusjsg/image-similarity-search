@@ -1,17 +1,22 @@
 import io
-from typing import Annotated, List, Dict, Any
-from fastapi import APIRouter, UploadFile, File, HTTPException, Depends, status, Request, Query
+from pathlib import Path
+from typing import Annotated, Any, Dict, List
+
+from fastapi import (APIRouter, Depends, File, HTTPException, Query, Request,
+                     UploadFile, status)
 from fastapi.concurrency import run_in_threadpool
 from PIL import Image, UnidentifiedImageError
-from pathlib import Path
-from app.services.image_search import ImageSearchService
+
 from app.core.config import settings
 from app.core.dependencies import get_search_service
 from app.schemas.image import SearchResponse
+from app.services.image_search import ImageSearchService
 from app.validators.upload_image_validator import validate_uploaded_image
 
-
+#  Cambio del prefijo de la ruta a /search
 router = APIRouter(prefix="/image", tags=["Image"])
+
+#  Cambio de la ruta a /search/image
 
 
 @router.post("/upload",
@@ -63,3 +68,5 @@ async def search_by_image(
         })
 
     return SearchResponse(results=response_items_list)
+
+#  Agregar la ruta para obtener la imagen por texto
