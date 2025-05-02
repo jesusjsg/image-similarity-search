@@ -1,4 +1,5 @@
 import io
+import logging
 from pathlib import Path
 from typing import Annotated, Any, Dict, List
 
@@ -12,6 +13,9 @@ from app.core.dependencies import get_search_service
 from app.schemas.image import SearchResponse
 from app.services.image_search import ImageSearchService
 from app.validators.upload_image_validator import validate_uploaded_image
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
 
 #  Cambio del prefijo de la ruta a /search
 router = APIRouter(prefix="/image", tags=["Image"])
@@ -50,6 +54,7 @@ async def search_by_image(
     base_url = str(settings.IMAGE_BASE_URL).strip("/")
     static_root = str(settings.STATIC_IMAGE_PATH.resolve())
 
+    # refactor this for loop to use zip in other module
     for path, score in zip(results_paths, results_scores):
         url = None
         absolute_path = Path(path)
@@ -59,7 +64,7 @@ async def search_by_image(
             url_path = "/".join(relative_path.parts)
             url = f"{base_url}/{url_path}"
         except Exception as e:
-            print(f"Error al construir la URL.")
+            log.error(f"Error creating URL for image: {e}")
 
         response_items_list.append({
             "name": filename_stem,
