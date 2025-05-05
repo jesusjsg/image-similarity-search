@@ -9,6 +9,8 @@ import torch
 from PIL import Image
 from torch import Tensor
 
+from app.core.logger import logger
+
 
 class ImageSearchService:
     def __init__(self,
@@ -35,7 +37,7 @@ class ImageSearchService:
                 self.image_paths = json.load(f)
 
         except Exception as e:
-            print(f"Error loading model or index: {e}")
+            logger.error(f"Error inicializando ImageSearchService: {e}")
             raise
 
     def search(self, query: Image.Image, top_k: int) -> tuple[list[str], list[float]]:
@@ -60,5 +62,5 @@ class ImageSearchService:
                         valid_distances.append(distances[0][i])
             return results, valid_distances
         except Exception as e:
-            print(f"Error during search: {e}")
+            logger.error(f"Error en la búsqueda de imágenes: {e}")
             return [], []

@@ -5,6 +5,7 @@ from fastapi import FastAPI
 
 from app.core.app_setup import setup_app
 from app.core.config import settings
+from app.core.logger import logger
 from app.routers import images as images_router
 from app.services.image_search import ImageSearchService
 
@@ -21,15 +22,15 @@ async def lifespan(app: FastAPI):
             model_name=settings.CLIP_MODEL_NAME,
             device=settings.DEVICE
         )
-        print("ImageSearchService initialized successfully.")
+        logger.info("Aplicación iniciada correctamente")
         app.state.search_service = service_instance
     except FileNotFoundError as e:
-        print(f"Error initializing ImageSearchService: {e}")
+        logger.error(f"Error al inicializar ImageSearchService: {e}")
         app.state.search_service = service_instance
     except Exception as e:
-        print(f"Unexpected error initializing ImageSearchService: {e}")
+        logger.error(f"Error inesperado al iniciar la aplicación: {e}")
         app.state.search_service = service_instance
-    yield  # Inicio de la aplicación
+    yield
 
 app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
 

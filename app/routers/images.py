@@ -9,6 +9,7 @@ from PIL import Image, UnidentifiedImageError
 
 from app.core.config import settings
 from app.core.dependencies import get_search_service
+from app.core.logger import logger
 from app.schemas.image import SearchResponse
 from app.services.image_search import ImageSearchService
 from app.validators.upload_image_validator import validate_uploaded_image
@@ -60,7 +61,7 @@ async def search_by_image(
             url_path = "/".join(relative_path.parts)
             url = f"{base_url}/{url_path}"
         except Exception as e:
-            print(f"Error creating URL for image: {e}")
+            logger.error(f"Error al construir la URL de la imagen: {e}")
 
         response_items_list.append({
             "name": filename_stem,
@@ -69,5 +70,3 @@ async def search_by_image(
         })
 
     return SearchResponse(results=response_items_list)
-
-#  Agregar la ruta para obtener la imagen por texto

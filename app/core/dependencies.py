@@ -1,6 +1,8 @@
-from app.services.image_search import ImageSearchService
-from app.core.config import settings
 from fastapi import HTTPException, status
+
+from app.core.config import settings
+from app.core.logger import logger
+from app.services.image_search import ImageSearchService
 
 _search_service: ImageSearchService | None = None
 
@@ -16,7 +18,7 @@ def get_search_service() -> ImageSearchService:
                 device=settings.DEVICE
             )
         except Exception as e:
-            print(f"Error initializing SearchService: {e}")
+            logger.error(f"Error inicializando ImageSearchService: {e}")
             _search_service = None
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
